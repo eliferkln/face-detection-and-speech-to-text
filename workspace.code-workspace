@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\yapay-zeka-ile-duygu-kontrolu-master\\models"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "pskl rdv"
+	}
+}

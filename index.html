@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head prefix="og: http://ogp.me/ns">
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache">
+
+  <title>Speech to Text Webcam Overlay</title>
+  <meta name="description" content="Web Speech API Bu, web kamerası görüntüsünde yukarıdaki ses tanıma sonucunun altyazılarını gösteren bir web sayfasıdır. Ekranı tarayıcıya kaydedebilir ve video konferanslar ve canlı dağıtım için kullanabilirsiniz.">
+  <meta property="og:title" content="Speech to Text Webcam Overlay">
+  <meta property="og:description" content="Web Speech API Bu, web kamerası görüntüsünde yukarıdaki ses tanıma sonucunun altyazılarını gösteren bir web sayfasıdır. Ekranı tarayıcıya kaydedebilir ve video konferanslar ve canlı dağıtım için kullanabilirsiniz.">
+  <meta property="og:url" content="https://1heisuzuki.github.io/speech-to-text-webcam-overlay/">
+  <meta property="og:image" content="https://1heisuzuki.github.io/speech-to-text-webcam-overlay/thumbnail.jpg">
+  <meta name="twitter:card" content="summary">
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?ver=202104201120" type="text/css" media="screen">
+  <script defer src="./face-api.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+  <div class="main">
+    <div id="status" class="error">Başlangıç...</div>
+    <div id="status_kuromoji_loading" class="hidden"></div>
+
+    <div id="video_wrapper" class="video_wrapper">
+      <video id="video" class="video_area" autoplay></video>
+      <div id="video_bg" class="video_bg hidden"></div>
+      <div id="text_overlay_wrapper" class="text_overlay_wrapper full">
+        <div id="text_bg" class="text_bg"></div>
+        <div id="result_text" class="text_area"> Lütfen mikrofonu ve kamerayı etkinleştiriniz.</div>
+      </div>
+      <img alt="FullScreen" src="fullscreen.svg" id="FullScreenBtn" class="FullScreenBtn" width="20" height="20" style="display:block">
+    </div>
+
+    <div id="help_on_error" class="help_on_error">
+      Kamera veya mikrofon çalışmadığında → Sayfayı yeniden yükleyin veya tarayıcı ayarlarını kontrol edin: <a href="https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DDesktop&hl=ja&oco=1" target="_blank">Chrome ヘルプ</a>
+    </div>
+
+    <div class="interface_wrapper">
+      <input class="checkboxes" id="checkbox_controls" type="checkbox" checked><label class="checkboxes_label" for="checkbox_controls">Gelişmiş ayarları göster</label>
+      <input class="checkboxes" id="checkbox_log" type="checkbox" checked><label class="checkboxes_label" for="checkbox_log">Tanıma sonucu günlüğünü görüntüle</label>
+      <div class="controls_wrapper control_wrapper_row">
+
+
+
+        <div class="control_button_wrapper">
+          <input type="button" value="Kamerayı göster / gizle" onclick="toggleClass('result_video','hidden')">
+          <input type="button" value="Kamera sola / sağa çevirme" onclick="toggleClass('result_video','mirror')">
+          <input type="button" value="Karakterleri göster / gizle" onclick="toggleClass('text_overlay_wrapper','hidden')">
+          <input type="button" value="Karakter sol-sağ çevirme" onclick="toggleClass('text_overlay_wrapper','mirror')">
+          <input type="button" value="Tam ekran düğmesi Göster / Gizle" onclick="toggleClass('FullScreenBtn','hidden')">
+          <input type="button" value="Ayarları başlat" onclick="deleteConfig()">
+        </div>
+  
+        <div class="control_selector_wrapper">
+          kamera：
+          <select id="select_camera" onchange="setupCamera()"></select>
+        </div>
+
+        <div class="control_selector_wrapper">
+          ses tanıma:
+          <select id="select_language" class="selector" onchange="updateCountry()"></select>
+          <select id="select_dialect" class="selector" onchange="updateLanguage()"></select>
+         
+          
+          <div id="google_translate_element" class="select_translation selector"></div>
+        </div>
+      </div>
+      <div id="log" class="log_wrapper">
+        <div class="control_header">speech to text</div>
+        <div class="log_control_wrapper help_text">
+        
+          <div class="log_input_wrapper">
+            <label for="checkbox_timestamp">Zaman kaydı:</label> <input type="checkbox" id="checkbox_timestamp" name="checkbox_timestamp" value="timestamp">
+          </div>
+        </div>
+        <textarea id="result_log" class="result_log_area" onchange="textAreaHeightSet(this)"></textarea><br/>
+        <div style="text-align: center; opacity: 0.6;">
+          <input type="button" value="konuşmaları indir" onclick="downloadLogFile(this)">
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+  <script src="kuromoji/build/kuromoji.js" defer></script>
+
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js" defer></script>
+  <script src="./main.js?v=202109230545" defer></script>
+</body>
+
+</html>
